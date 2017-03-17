@@ -1,2 +1,2 @@
-Lock the table header
-Пример фиксирования таблицы на html
+# Lock the table header
+РџСЂРёРјРµСЂ С„РёРєСЃРёСЂРѕРІР°РЅРёСЏ С‚Р°Р±Р»РёС†С‹ РЅР° html
