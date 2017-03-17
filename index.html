@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="vendor/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <style>
+        #header-fixed {
+            position: fixed;
+            display: none;
+            background: white;
+        }
+    </style>
+
+    <div class="container">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <table class="table table-hover" id="header-fixed"></table>
+            <table class="table table-hover foxFix">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Дней</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="vendor/jquery-2.2.4.min.js"></script>
+    <script>
+        // Заполняем таблицу
+        function fillTable() {
+            var el;
+            var tbody = $('tbody');
+            var d = new Date();
+
+            for (var i = 1; i < 366; i++) {
+                s = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+                el = $('<tr><td>' + s + '</td><td>' + i + '</td></tr>');
+                tbody.append(el);
+                d.setDate(d.getDate() + 1);
+            }
+        }
+
+        function fixTable() {
+            var $header = $("table.foxFix > thead");
+            var tableOffset = $("table.foxFix").offset().top - $header.outerHeight() - $header.height();
+            var $fixTable = $("#header-fixed");
+            var $fixedHeader = $fixTable.append($header.clone());
+
+
+            function setWidthFixHeader() {
+                var w = $header.outerWidth();
+                $fixedHeader.css('width', w);
+
+                var thNorm = $header.find('th');
+                var thFix = $fixedHeader.find('th');
+                for (var i = 0, len = thNorm.length; i < len; i++) {
+                    w = $(thNorm[i]).outerWidth();
+                    $(thFix[i]).css('width', w);
+                }
+            }
+
+            $(window).bind("scroll", function() {
+                var offsetV = $(this).scrollTop();
+                var offsetH = $(this).scrollLeft();
+
+                // по вертикалми
+                if (offsetV >= tableOffset && $fixedHeader.is(":hidden")) {
+                    setWidthFixHeader();
+                    $fixedHeader.show();
+                } else if (offsetV < tableOffset) {
+                    $fixedHeader.hide();
+                }
+            });
+        }
+
+        $(function() {
+            fillTable();
+            fixTable();
+        });
+    </script>
+</body>
+
+</html>
